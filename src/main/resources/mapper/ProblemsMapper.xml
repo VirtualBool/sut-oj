@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chen.sutoj.mapper.ProblemsMapper">
+
+    <resultMap id="BaseResultMap" type="com.chen.sutoj.model.entity.Problems">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="contestId" column="contest_id" jdbcType="BIGINT"/>
+            <result property="problemCode" column="problem_code" jdbcType="VARCHAR"/>
+            <result property="title" column="title" jdbcType="VARCHAR"/>
+            <result property="description" column="description" jdbcType="VARCHAR"/>
+            <result property="timeLimitMs" column="time_limit_ms" jdbcType="INTEGER"/>
+            <result property="memoryLimitMb" column="memory_limit_mb" jdbcType="INTEGER"/>
+            <result property="outputLimitMb" column="output_limit_mb" jdbcType="INTEGER"/>
+            <result property="createdAt" column="created_at" jdbcType="TIMESTAMP"/>
+            <result property="updatedAt" column="updated_at" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,contest_id,problem_code,
+        title,description,time_limit_ms,
+        memory_limit_mb,output_limit_mb,created_at,
+        updated_at
+    </sql>
+</mapper>

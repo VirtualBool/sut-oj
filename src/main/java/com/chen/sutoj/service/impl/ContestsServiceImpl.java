@@ -8,12 +8,18 @@ import com.chen.sutoj.common.PageRequest;
 import com.chen.sutoj.exception.ErrorCode;
 import com.chen.sutoj.exception.ThrowUtils;
 import com.chen.sutoj.mapper.ContestsMapper;
+import com.chen.sutoj.mapper.ProblemsMapper;
+import com.chen.sutoj.model.dto.AddProblemRequest;
 import com.chen.sutoj.model.dto.ContestsRequest;
 import com.chen.sutoj.model.entity.Contests;
+import com.chen.sutoj.model.entity.Problems;
 import com.chen.sutoj.model.vo.ContestsVO;
 import com.chen.sutoj.service.ContestsService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,6 +32,8 @@ import java.util.stream.Collectors;
 public class ContestsServiceImpl extends ServiceImpl<ContestsMapper, Contests>
         implements ContestsService {
 
+    @Resource
+    ProblemsMapper problemsMapper;
     /**
      * 查询竞赛列表
      *
@@ -68,6 +76,33 @@ public class ContestsServiceImpl extends ServiceImpl<ContestsMapper, Contests>
          ThrowUtils.throwIf( !result, ErrorCode.SYSTEM_ERROR);;
 
 
+    }
+
+    /**
+     * 删除竞赛
+     *
+     * @param id
+     */
+    @Transactional
+    @Override
+    public void deleteContest(Long id) {
+        baseMapper.delete(new QueryWrapper<Contests>().eq("id", id));
+        //删除竞赛下的所有题目
+        QueryWrapper<Problems> problemsQueryWrapper = new QueryWrapper<>();
+        problemsQueryWrapper.eq("contest_id", id);
+        problemsMapper.delete(problemsQueryWrapper);
+    }
+
+    /**
+     * 添加题目
+     *
+     * @param addProblemRequest
+     */
+    @Override
+    public void addProblem(AddProblemRequest addProblemRequest) {
+        Problems problems = new Problems();
+        BeanUtils.copyProperties(addProblemRequest, problems);
+        problemsMapper.insert(problems);
     }
 }
 

@@ -4,6 +4,7 @@ package com.chen.sutoj.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.chen.sutoj.common.PageRequest;
+import com.chen.sutoj.model.dto.AddProblemRequest;
 import com.chen.sutoj.model.dto.ContestsRequest;
 import com.chen.sutoj.model.entity.Contests;
 import com.chen.sutoj.model.vo.ContestsVO;
@@ -29,4 +30,16 @@ public interface ContestsService extends IService<Contests> {
      * @param contestsRequest
      */
     void addContest(ContestsRequest contestsRequest);
+
+    /**
+     * 删除竞赛
+     * @param id
+     */
+    void deleteContest(Long id);
+
+    /**
+     * 为竞赛添加问题
+     * @param addProblemRequest
+     */
+    void addProblem(AddProblemRequest addProblemRequest);
 }

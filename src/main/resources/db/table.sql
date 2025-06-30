@@ -108,3 +108,4 @@ CREATE TABLE `contest_team_rankings`
     PRIMARY KEY (`contest_id`, `team_id`),                                             -- 复合主键，唯一标识一个队伍在某个竞赛中的排名
     INDEX `idx_contest_score_penalty` (`contest_id`, `score` DESC, `penalty_time` ASC) -- 用于查询某一竞赛的排名（分数降序，罚时升序）
 ) COMMENT ='竞赛队伍实时排名快照表';
+
