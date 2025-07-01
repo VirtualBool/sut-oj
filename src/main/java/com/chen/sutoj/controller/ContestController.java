@@ -78,4 +78,14 @@ public class ContestController {
         ContestProblemDetailsVO contestProblemDetailsVO = problemsService.getProblemsById(problemId);
         return ResultUtils.success(contestProblemDetailsVO);
     }
+
+    // 获取竞赛的详细信息
+    @GetMapping("/getContestDetails/{id}")
+    @ApiOperation("获取竞赛的详细信息")
+    public BaseResponse<ContestsVO> getContestDetails(@PathVariable("id") Long id) {
+
+        ContestsVO contestsVO = contestsService.getContestDetailsById(id);
+
+        return ResultUtils.success(contestsVO);
+    }
 }

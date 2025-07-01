@@ -104,6 +104,21 @@ public class ContestsServiceImpl extends ServiceImpl<ContestsMapper, Contests>
         BeanUtils.copyProperties(addProblemRequest, problems);
         problemsMapper.insert(problems);
     }
+
+    /**
+     * 返回竞赛的详细信息
+     * @param id
+     * @return
+     */
+    @Override
+    public ContestsVO getContestDetailsById(Long id) {
+        Contests id1 = this.baseMapper.selectOne(new QueryWrapper<Contests>().eq("id", id));
+        ContestsVO contestsVO = new ContestsVO();
+        BeanUtils.copyProperties(id1, contestsVO);
+        return contestsVO;
+    }
+
+
 }
 
 

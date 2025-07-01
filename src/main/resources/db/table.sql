@@ -22,6 +22,9 @@ create table if not exists user
     INDEX idx_userName (userName)
 ) comment '用户' collate = utf8mb4_unicode_ci;
 
+-- 报名表，即记录用户报名竞赛记录
+
+
 -- 存储竞赛的基本信息。
 CREATE TABLE `contests`
 (
@@ -91,21 +94,20 @@ CREATE TABLE `submissions`
 
 -- 这是与 Redis Sorted Set 进行同步的表。
 -- 它存储了每个队伍在特定竞赛中的最新积分和排名相关数据，供历史查询和最终统计使用。
+drop table if exists `contest_team_rankings`;
 CREATE TABLE `contest_team_rankings`
 (
     `contest_id`            BIGINT   NOT NULL COMMENT '竞赛ID',
-    `team_id`               BIGINT   NOT NULL COMMENT '队伍ID',
+    `user_id`               BIGINT   NOT NULL COMMENT '用户ID',
     `score`                 INT      NOT NULL DEFAULT 0 COMMENT '总得分（通常是AC题目数）',
     `penalty_time`          INT      NOT NULL DEFAULT 0 COMMENT '罚时（分钟）',
     `solved_problems_count` INT      NOT NULL DEFAULT 0 COMMENT '解决题目数',
     -- 存储每道题目的状态，例如：
     -- 可以是JSON格式存储每道题的尝试次数和通过状态，例如：
-    -- `problem_status_json` JSON COMMENT '各题目状态（例: {"A": {"attempts": 2, "ac_time_minutes": 30}, "B": {"attempts": 1, "ac_time_minutes": null}})'
-    -- 或者，更规范化地，如果需要详细查询，可以考虑一个单独的 `team_problem_status` 表
-    `last_synced_at`        DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后从Redis同步到数据库的时间',
+    `problem_status_json` JSON COMMENT '各题目状态',
+    -- （例: {"A": {"attempts": 2, "ac_time_minutes": 30}, "B": {"attempts": 1, "ac_time_minutes": null}})'
     `created_at`            DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '记录首次创建时间',
-    `updated_at`            DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '记录更新时间',
-    PRIMARY KEY (`contest_id`, `team_id`),                                             -- 复合主键，唯一标识一个队伍在某个竞赛中的排名
+    `updated_at`            DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '记录更新时间,即redis最新谢图时间',
+    PRIMARY KEY (`contest_id`, `user_id`),                                             -- 复合主键，唯一标识一个队伍在某个竞赛中的排名
     INDEX `idx_contest_score_penalty` (`contest_id`, `score` DESC, `penalty_time` ASC) -- 用于查询某一竞赛的排名（分数降序，罚时升序）
-) COMMENT ='竞赛队伍实时排名快照表';
-
+) COMMENT ='竞赛队伍实时排名快照表，同时用做报名表';

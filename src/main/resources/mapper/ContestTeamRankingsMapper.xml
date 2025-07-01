@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chen.sutoj.mapper.ContestTeamRankingsMapper">
+
+    <resultMap id="BaseResultMap" type="com.chen.sutoj.model.entity.ContestTeamRankings">
+            <id property="contestId" column="contest_id" jdbcType="BIGINT"/>
+            <id property="userId" column="user_id" jdbcType="BIGINT"/>
+            <result property="score" column="score" jdbcType="INTEGER"/>
+            <result property="penaltyTime" column="penalty_time" jdbcType="INTEGER"/>
+            <result property="solvedProblemsCount" column="solved_problems_count" jdbcType="INTEGER"/>
+            <result property="problemStatusJson" column="problem_status_json" jdbcType="OTHER"/>
+            <result property="createdAt" column="created_at" jdbcType="TIMESTAMP"/>
+            <result property="updatedAt" column="updated_at" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        contest_id,user_id,score,
+        penalty_time,solved_problems_count,problem_status_json,
+        created_at,updated_at
+    </sql>
+</mapper>

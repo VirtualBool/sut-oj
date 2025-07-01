@@ -42,4 +42,11 @@ public interface ContestsService extends IService<Contests> {
      * @param addProblemRequest
      */
     void addProblem(AddProblemRequest addProblemRequest);
+
+    /**
+     * 获取竞赛详情
+     * @param id
+     * @return
+     */
+    ContestsVO getContestDetailsById(Long id);
 }
